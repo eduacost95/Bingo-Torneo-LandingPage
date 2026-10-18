@@ -1,0 +1,6 @@
+{
+  "name": "Bingo Torneo Free - Maicao",
+  "description": "Torneo gratuito de bingo por puntos en Maicao, La Guajira. Consigue tu cartón gratis, acumula hasta 500 puntos y gana bonos de mercado familiar. Sin apuestas ni compras. Solo mayores de 18 años.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
