@@ -38,6 +38,9 @@ export interface TournamentSettings {
   supabaseUrl: string;
   supabaseAnonKey: string;
   adminPin: string;
+  heroImageUrl?: string;
+  communityImageUrl?: string;
+  prizesImageUrl?: string;
 }
 
 export interface BingoCardData {

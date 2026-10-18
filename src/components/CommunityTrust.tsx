@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { Heart, Users, MapPin, Share2, Check } from 'lucide-react';
 
-export const CommunityTrust: React.FC = () => {
+import { TournamentSettings } from '../types';
+import { DEFAULT_SETTINGS } from '../lib/supabase';
+
+interface CommunityTrustProps {
+  settings?: TournamentSettings;
+}
+
+export const CommunityTrust: React.FC<CommunityTrustProps> = ({ settings = DEFAULT_SETTINGS }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
@@ -36,7 +43,7 @@ export const CommunityTrust: React.FC = () => {
               )}
 
               <img
-                src="/src/assets/images/comunidad_maicao_reunion_1792333770784.jpg"
+                src={settings.communityImageUrl || DEFAULT_SETTINGS.communityImageUrl}
                 alt="Amigos adultos conversando con café y celular en Maicao La Guajira en un ambiente cotidiano y cálido"
                 className={`w-full aspect-[4/3] object-cover transition-opacity duration-300 ${
                   imageLoaded && !imageError ? 'opacity-100 block' : 'hidden'

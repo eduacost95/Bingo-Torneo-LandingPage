@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { ArrowRight, Sparkles, MapPin, CheckCircle2 } from 'lucide-react';
 
+import { TournamentSettings } from '../types';
+import { DEFAULT_SETTINGS } from '../lib/supabase';
+
 interface HeroProps {
   onRegisterClick: () => void;
+  settings?: TournamentSettings;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onRegisterClick }) => {
+export const Hero: React.FC<HeroProps> = ({ onRegisterClick, settings = DEFAULT_SETTINGS }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -113,7 +117,7 @@ export const Hero: React.FC<HeroProps> = ({ onRegisterClick }) => {
                 )}
 
                 <img
-                  src="/src/assets/images/hero_maicao_bingo_1792333770482.jpg"
+                  src={settings.heroImageUrl || DEFAULT_SETTINGS.heroImageUrl}
                   alt="Mujer adulta sonriente con tinto en tienda de barrio de Maicao mirando celular con bingo digital"
                   className={`w-full aspect-[16/10] sm:aspect-[4/3] object-cover transition-opacity duration-300 ${
                     imageLoaded && !imageError ? 'opacity-100 block' : 'hidden'

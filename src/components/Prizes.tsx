@@ -53,7 +53,7 @@ export const Prizes: React.FC<PrizesProps> = ({
 
               <div className="relative">
                 <img
-                  src="/src/assets/images/premios_canasta_mercado_1792333770845.jpg"
+                  src={settings.prizesImageUrl || DEFAULT_SETTINGS.prizesImageUrl}
                   alt="Canasta familiar de mercado con víveres colombianos y bono de compra para el hogar"
                   className={`w-full aspect-[4/3] object-cover transition-opacity duration-300 ${
                     imageLoaded && !imageError ? 'opacity-100 block' : 'hidden'

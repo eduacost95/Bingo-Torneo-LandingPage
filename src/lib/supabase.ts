@@ -25,6 +25,9 @@ export const DEFAULT_SETTINGS: TournamentSettings = {
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL || '',
   supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
   adminPin: '1234',
+  heroImageUrl: '/src/assets/images/hero_maicao_bingo_1792333770482.jpg',
+  communityImageUrl: '/src/assets/images/comunidad_maicao_reunion_1792333770784.jpg',
+  prizesImageUrl: '/src/assets/images/premios_canasta_mercado_1792333770845.jpg',
 };
 
 const LOCAL_STORAGE_SETTINGS_KEY = 'btf_tournament_settings_v1';
@@ -74,6 +77,69 @@ export function loadSettings(): TournamentSettings {
     console.error('Error cargando settings locales:', e);
   }
   return DEFAULT_SETTINGS;
+}
+
+export async function loadSettingsAsync(): Promise<TournamentSettings> {
+  const local = loadSettings();
+  const supabase = getSupabaseClient(local.supabaseUrl, local.supabaseAnonKey);
+  if (!supabase) return local;
+
+  try {
+    const { data, error } = await supabase
+      .from('tournament_settings')
+      .select('settings')
+      .eq('id', 'default')
+      .single();
+
+    if (data && data.settings) {
+      const merged: TournamentSettings = {
+        ...DEFAULT_SETTINGS,
+        ...local,
+        ...data.settings,
+        firstPrize: { ...DEFAULT_SETTINGS.firstPrize, ...local.firstPrize, ...data.settings.firstPrize },
+        secondPrize: { ...DEFAULT_SETTINGS.secondPrize, ...local.secondPrize, ...data.settings.secondPrize },
+        thirdPrize: { ...DEFAULT_SETTINGS.thirdPrize, ...local.thirdPrize, ...data.settings.thirdPrize },
+      };
+      localStorage.setItem(LOCAL_STORAGE_SETTINGS_KEY, JSON.stringify(merged));
+      return merged;
+    }
+  } catch (e) {
+    console.warn('No se pudo cargar settings de Supabase:', e);
+  }
+  return local;
+}
+
+export async function uploadImageToSupabase(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64Url = reader.result as string;
+      const supabase = getSupabaseClient();
+      if (supabase) {
+        try {
+          const fileName = `img_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+          const { data, error } = await supabase.storage
+            .from('tournament-images')
+            .upload(fileName, file, { upsert: true });
+
+          if (!error && data) {
+            const { data: pubData } = supabase.storage
+              .from('tournament-images')
+              .getPublicUrl(data.path);
+            if (pubData?.publicUrl) {
+              resolve(pubData.publicUrl);
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('Storage bucket upload fell back to base64:', err);
+        }
+      }
+      resolve(base64Url);
+    };
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
 }
 
 export async function saveSettings(settings: TournamentSettings): Promise<boolean> {
@@ -256,7 +322,7 @@ export async function fetchAllRegistrations(): Promise<{
   }
 }
 
-export const SUPABASE_SQL_SETUP_SCRIPT = `-- SCRIPT SQL PARA CREAR LAS TABLAS EN TU PROYECTO DE SUPABASE
+export const SUPABASE_SQL_SETUP_SCRIPT = `-- SCRIPT SQL PARA CREAR LAS TABLAS Y EL BUCKET DE IMÁGENES EN SUPABASE
 -- Abre Supabase -> SQL Editor -> Pega y ejecuta este código:
 
 -- 1. Tabla de inscripciones de participantes
@@ -301,4 +367,27 @@ CREATE POLICY "Permitir lectura y gestion de configuracion"
   ON tournament_settings FOR ALL
   USING (true)
   WITH CHECK (true);
+
+-- 3. Crear Bucket de Almacenamiento para las Imágenes del Torneo
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('tournament-images', 'tournament-images', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- 4. Políticas de Seguridad (RLS) para el Storage Bucket (subida y lectura de imágenes)
+CREATE POLICY "Permitir lectura publica de imagenes"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'tournament-images');
+
+CREATE POLICY "Permitir subida de imagenes"
+  ON storage.objects FOR INSERT
+  WITH CHECK (bucket_id = 'tournament-images');
+
+CREATE POLICY "Permitir actualizacion de imagenes"
+  ON storage.objects FOR UPDATE
+  USING (bucket_id = 'tournament-images');
+
+CREATE POLICY "Permitir eliminacion de imagenes"
+  ON storage.objects FOR DELETE
+  USING (bucket_id = 'tournament-images');
 `;
+

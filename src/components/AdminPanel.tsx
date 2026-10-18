@@ -7,6 +7,8 @@ import {
 import {
   fetchAllRegistrations,
   saveSettings,
+  uploadImageToSupabase,
+  DEFAULT_SETTINGS,
   SUPABASE_SQL_SETUP_SCRIPT,
   getSupabaseClient,
 } from '../lib/supabase';
@@ -46,18 +48,47 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
 
-  const [activeTab, setActiveTab] = useState<'records' | 'whatsapp' | 'prizes' | 'supabase'>('records');
+  const [activeTab, setActiveTab] = useState<'records' | 'whatsapp' | 'prizes' | 'images' | 'supabase'>('records');
   const [records, setRecords] = useState<RegistrationRecord[]>([]);
   const [isLoadingRecords, setIsLoadingRecords] = useState(false);
   const [isFromSupabase, setIsFromSupabase] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCity, setFilterCity] = useState<string>('all');
 
+  // Image upload state
+  const [uploadingImageKey, setUploadingImageKey] = useState<string | null>(null);
+  const [imageUploadMsg, setImageUploadMsg] = useState<string>('');
+
   // Editable settings copy
   const [editableSettings, setEditableSettings] = useState<TournamentSettings>(settings);
   const [isSavingSettings, setIsSavingSettings] = useState(false);
   const [saveSuccessMessage, setSaveSuccessMessage] = useState('');
   const [copiedSql, setCopiedSql] = useState(false);
+
+  const handleImageFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    key: 'heroImageUrl' | 'communityImageUrl' | 'prizesImageUrl'
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImageKey(key);
+    setImageUploadMsg('Subiendo imagen al bucket de Supabase / almacenamiento...');
+    try {
+      const publicUrl = await uploadImageToSupabase(file);
+      const updated = { ...editableSettings, [key]: publicUrl };
+      setEditableSettings(updated);
+      await saveSettings(updated);
+      onSettingsUpdated(updated);
+      setImageUploadMsg('¡Imagen subida y guardada en el bucket exitosamente!');
+      setTimeout(() => setImageUploadMsg(''), 4000);
+    } catch (err: any) {
+      console.error('Error subiendo imagen:', err);
+      setImageUploadMsg(`Error al subir imagen: ${err?.message || 'Error desconocido'}`);
+    } finally {
+      setUploadingImageKey(null);
+    }
+  };
 
   useEffect(() => {
     setEditableSettings(settings);
@@ -66,6 +97,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   useEffect(() => {
     if (isOpen && isAuthenticated) {
       loadRecords();
+
+      const supabase = getSupabaseClient();
+      if (supabase) {
+        const channel = supabase
+          .channel('public:registrations')
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'registrations' },
+            () => {
+              loadRecords();
+            }
+          )
+          .subscribe();
+
+        return () => {
+          supabase.removeChannel(channel);
+        };
+      }
     }
   }, [isOpen, isAuthenticated]);
 
@@ -263,6 +312,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               >
                 <Gift className="w-4 h-4" />
                 <span>Premios en Especie</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('images')}
+                className={`py-3 px-3.5 text-xs font-bold border-b-2 flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
+                  activeTab === 'images'
+                    ? 'border-[#C45A3C] text-[#C45A3C]'
+                    : 'border-transparent text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                <Database className="w-4 h-4" />
+                <span>Imágenes (Bucket)</span>
               </button>
 
               <button
@@ -723,6 +785,120 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     >
                       {isSavingSettings ? 'Guardando Premios...' : 'Guardar Cambios de Premios'}
                     </button>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB: IMAGES & BUCKET */}
+              {activeTab === 'images' && (
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-base font-black text-stone-900 font-heading">
+                      Gestión de Imágenes de Referencia y Bucket de Base de Datos
+                    </h3>
+                    <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                      Sube o cambia las imágenes de la página (Hero Principal, Comunidad y Canasta de Premios). Al subirlas, se almacenan en el bucket de Supabase y quedan sincronizadas en tiempo real en todo el despliegue.
+                    </p>
+                    {imageUploadMsg && (
+                      <div className="mt-2 p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800">
+                        {imageUploadMsg}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    {/* Hero Image */}
+                    <div className="p-4 rounded-2xl border border-stone-200 bg-[#FAF6EF] space-y-3 flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#C45A3C]">
+                          1. Imagen Hero (Principal)
+                        </span>
+                        <div className="aspect-[4/3] rounded-xl overflow-hidden border border-stone-300 bg-white">
+                          <img
+                            src={editableSettings.heroImageUrl || DEFAULT_SETTINGS.heroImageUrl}
+                            alt="Hero Preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                          Cambiar imagen hero
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingImageKey === 'heroImageUrl'}
+                          onChange={(e) => handleImageFileChange(e, 'heroImageUrl')}
+                          className="w-full text-xs text-stone-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#00C2D1] file:text-white hover:file:bg-[#00A9B7] cursor-pointer"
+                        />
+                        {uploadingImageKey === 'heroImageUrl' && (
+                          <span className="text-[10px] text-[#C45A3C] font-bold mt-1 block">Subiendo...</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Community Image */}
+                    <div className="p-4 rounded-2xl border border-stone-200 bg-[#FAF6EF] space-y-3 flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#4A6C6F]">
+                          2. Imagen Comunidad
+                        </span>
+                        <div className="aspect-[4/3] rounded-xl overflow-hidden border border-stone-300 bg-white">
+                          <img
+                            src={editableSettings.communityImageUrl || DEFAULT_SETTINGS.communityImageUrl}
+                            alt="Community Preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                          Cambiar imagen comunidad
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingImageKey === 'communityImageUrl'}
+                          onChange={(e) => handleImageFileChange(e, 'communityImageUrl')}
+                          className="w-full text-xs text-stone-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#00C2D1] file:text-white hover:file:bg-[#00A9B7] cursor-pointer"
+                        />
+                        {uploadingImageKey === 'communityImageUrl' && (
+                          <span className="text-[10px] text-[#C45A3C] font-bold mt-1 block">Subiendo...</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Prizes Image */}
+                    <div className="p-4 rounded-2xl border border-stone-200 bg-[#FAF6EF] space-y-3 flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <span className="text-xs font-bold uppercase tracking-wider text-stone-700">
+                          3. Imagen Canasta / Premios
+                        </span>
+                        <div className="aspect-[4/3] rounded-xl overflow-hidden border border-stone-300 bg-white">
+                          <img
+                            src={editableSettings.prizesImageUrl || DEFAULT_SETTINGS.prizesImageUrl}
+                            alt="Prizes Preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-stone-700 mb-1">
+                          Cambiar imagen premios
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingImageKey === 'prizesImageUrl'}
+                          onChange={(e) => handleImageFileChange(e, 'prizesImageUrl')}
+                          className="w-full text-xs text-stone-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#00C2D1] file:text-white hover:file:bg-[#00A9B7] cursor-pointer"
+                        />
+                        {uploadingImageKey === 'prizesImageUrl' && (
+                          <span className="text-[10px] text-[#C45A3C] font-bold mt-1 block">Subiendo...</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

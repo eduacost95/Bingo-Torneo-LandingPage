@@ -18,6 +18,7 @@ import { AdminPanel } from './components/AdminPanel';
 import { TournamentSettings, RegistrationRecord } from './types';
 import {
   loadSettings,
+  loadSettingsAsync,
   updateRegistrationWhatsAppStatus,
   DEFAULT_SETTINGS,
 } from './lib/supabase';
@@ -44,8 +45,9 @@ export default function App() {
   const [confirmationRecord, setConfirmationRecord] = useState<RegistrationRecord | null>(null);
 
   useEffect(() => {
-    const initialSettings = loadSettings();
-    setSettings(initialSettings);
+    loadSettingsAsync().then((initialSettings) => {
+      setSettings(initialSettings);
+    });
 
     // Detect if user arrives via WhatsApp invitation link (?invitado=true...)
     if (typeof window !== 'undefined' && window.location.search) {
@@ -93,7 +95,7 @@ export default function App() {
       {/* Main Sections */}
       <main className="flex-1">
         {/* 1. Hero Section */}
-        <Hero onRegisterClick={scrollToRegistration} />
+        <Hero onRegisterClick={scrollToRegistration} settings={settings} />
 
         {/* 2. Cómo Funciona el Torneo */}
         <HowItWorks onRegisterClick={scrollToRegistration} />
@@ -122,7 +124,7 @@ export default function App() {
         <FAQSection />
 
         {/* Community, Transparency & Ad Copy Consistency */}
-        <CommunityTrust />
+        <CommunityTrust settings={settings} />
       </main>
 
       {/* 8. Footer Legal with Admin Link */}
