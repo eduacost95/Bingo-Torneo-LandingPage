@@ -23,8 +23,12 @@ export const Hero: React.FC<HeroProps> = ({ onRegisterClick }) => {
             
             {/* Trust and Compliance Markers (Zero-Pill clean text with separators) */}
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-bold uppercase tracking-wider text-[#4A6C6F]">
-              <span className="flex items-center gap-1 text-[#C45A3C]">
-                <CheckCircle2 className="w-3.5 h-3.5" />
+              <span className="text-[#C45A3C] font-black">
+                BINGOS COMUNITARIOS
+              </span>
+              <span aria-hidden="true" className="text-stone-400">·</span>
+              <span className="flex items-center gap-1 text-[#4A6C6F]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#C45A3C]" />
                 100% GRATIS
               </span>
               <span aria-hidden="true" className="text-stone-400">·</span>
@@ -37,8 +41,9 @@ export const Hero: React.FC<HeroProps> = ({ onRegisterClick }) => {
 
             {/* Headline */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-stone-900 leading-[1.15] font-heading" style={{ textWrap: 'balance' }}>
-              ¡Torneo de Bingo Gratis por Puntos en{' '}
-              <span className="text-[#C45A3C] underline decoration-[#00C2D1] decoration-4 underline-offset-4">
+              ¡Torneo de{' '}
+              <span className="text-[#C45A3C]">Bingo Comunitario</span> Gratis por Puntos en{' '}
+              <span className="underline decoration-[#00C2D1] decoration-4 underline-offset-4">
                 Maicao
               </span>
               !
@@ -46,8 +51,8 @@ export const Hero: React.FC<HeroProps> = ({ onRegisterClick }) => {
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-stone-700 leading-relaxed max-w-xl">
-              Consigue tu cartón gratis, acumula puntos por cada figura y gana bonos de mercado. 
-              <strong className="font-semibold text-stone-900"> Sin compra, sin apuesta, solo diversión familiar</strong> en La Guajira.
+              Consigue tu cartón gratis y participa en nuestros <strong className="font-semibold text-stone-900">bingos comunitarios</strong>. Acumula puntos por cada figura y gana bonos de mercado. 
+              <strong className="font-semibold text-stone-900"> Sin compra, sin apuesta, solo entretenimiento comunitario</strong> en La Guajira.
             </p>
 
             {/* CTA decision cluster */}
@@ -102,8 +107,8 @@ export const Hero: React.FC<HeroProps> = ({ onRegisterClick }) => {
                     <div className="w-16 h-16 rounded-full bg-[#C45A3C] text-white flex items-center justify-center text-2xl font-black mb-3">
                       B
                     </div>
-                    <span className="font-bold text-stone-800 text-sm">Bingo Torneo Free · Maicao</span>
-                    <span className="text-xs text-stone-600 mt-1">Torneo 100% gratuito por puntos</span>
+                    <span className="font-bold text-stone-800 text-sm">Bingo Torneo · Comunitario</span>
+                    <span className="text-xs text-stone-600 mt-1">Bingos comunitarios gratuitos por puntos</span>
                   </div>
                 )}
 

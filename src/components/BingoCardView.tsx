@@ -24,7 +24,7 @@ export const BingoCardView: React.FC<BingoCardViewProps> = ({ card, onClose }) =
 
   const handleShareWhatsApp = () => {
     const text = encodeURIComponent(
-      `¡Ya tengo mi cartón oficial para el Torneo de Bingo Gratis en Maicao! Mi código es ${card.serialNumber}. ¡Inscríbete gratis tú también y gana bonos de mercado!`
+      `¡Ya tengo mi cartón oficial para los Bingos Comunitarios de Bingo Torneo en Maicao! Mi código es ${card.serialNumber}. ¡Inscríbete gratis tú también y gana bonos de mercado!`
     );
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
   };
@@ -57,10 +57,10 @@ export const BingoCardView: React.FC<BingoCardViewProps> = ({ card, onClose }) =
           <span>Cartón Oficial Digital</span>
         </div>
         <h3 className="text-xl sm:text-2xl font-black text-stone-900 font-heading mt-0.5">
-          Bingo Torneo Free
+          Bingo Torneo
         </h3>
-        <p className="text-xs text-stone-600">
-          Maicao · Torneo Gratuito por Puntos
+        <p className="text-xs font-bold text-[#4A6C6F] uppercase tracking-wider">
+          Comunitario · Maicao
         </p>
 
         {/* Player & Serial Meta */}
@@ -150,24 +150,15 @@ export const BingoCardView: React.FC<BingoCardViewProps> = ({ card, onClose }) =
         <button
           type="button"
           onClick={handleShareWhatsApp}
-          className="w-full py-2.5 px-4 text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20BE5A] rounded-xl transition-all shadow-xs flex items-center justify-center gap-2"
+          className="w-full py-2.5 px-4 text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20BE5A] rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
         >
           <Share2 className="w-4 h-4" />
           Guardar / Recibir por WhatsApp
         </button>
-
-        <button
-          type="button"
-          onClick={handleCopySerial}
-          className="w-full py-2 px-3 text-xs font-semibold text-stone-700 bg-white hover:bg-stone-50 border border-[#E8D5B5] rounded-xl transition-colors flex items-center justify-center gap-1.5"
-        >
-          {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Download className="w-3.5 h-3.5" />}
-          <span>{copiedLink ? '¡Serial copiado al portapapeles!' : 'Copiar código de cartón'}</span>
-        </button>
       </div>
 
-      <div className="mt-4 text-center text-[10px] text-stone-400">
-        Cartón digital intransferible · Válido para el torneo actual en Maicao · 18+
+      <div className="mt-4 text-center text-[10px] text-stone-500 font-medium">
+        Cartón oficial de bingos comunitarios · Válido para el torneo actual en Maicao · 18+
       </div>
     </div>
   );

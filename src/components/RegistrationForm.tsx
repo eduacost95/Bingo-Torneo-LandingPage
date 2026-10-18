@@ -6,20 +6,37 @@ import {
   MUNICIPIOS_GUAJIRA,
   generateRandomBingoCard,
 } from '../data/mockData';
-import { BingoCardData, RegistrationData } from '../types';
+import { BingoCardData, RegistrationData, RegistrationRecord } from '../types';
+import { saveRegistration } from '../lib/supabase';
 import { BingoCardView } from './BingoCardView';
-import { CheckCircle2, Gift, Shield, AlertTriangle, ArrowRight, UserCheck, ChevronRight, ChevronLeft } from 'lucide-react';
+import {
+  CheckCircle2,
+  Gift,
+  Shield,
+  AlertTriangle,
+  ArrowRight,
+  UserCheck,
+  ChevronRight,
+  ChevronLeft,
+  UserPlus,
+  Users,
+  Sparkles,
+} from 'lucide-react';
 
 interface RegistrationFormProps {
   onCardGenerated?: (card: BingoCardData) => void;
+  onRegistrationSuccess?: (record: RegistrationRecord) => void;
   onOpenRulesModal: () => void;
   onOpenPrivacyModal: () => void;
+  onInviteAnother?: () => void;
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   onCardGenerated,
+  onRegistrationSuccess,
   onOpenRulesModal,
   onOpenPrivacyModal,
+  onInviteAnother,
 }) => {
   const [formData, setFormData] = useState<RegistrationData>({
     fullName: '',
@@ -93,14 +110,13 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
 
-    // Simulate instant secure registration & generate card
-    setTimeout(() => {
+    try {
       const selectedNeighborhood = formData.neighborhood.includes('Otro')
         ? customNeighborhood.trim()
         : formData.neighborhood;
@@ -115,10 +131,30 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         `${effectiveCity} (${selectedNeighborhood})`
       );
 
+      const record: RegistrationRecord = {
+        id: `reg_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        fullName: formData.fullName.trim(),
+        phone: formData.phone.trim(),
+        city: effectiveCity,
+        neighborhood: selectedNeighborhood,
+        serialNumber: card.serialNumber,
+        cardMatrix: card.matrix,
+        createdAt: new Date().toISOString(),
+        joinedWhatsApp: false,
+        status: 'activo',
+      };
+
+      // Save to Supabase (with automatic local storage fallback)
+      await saveRegistration(record);
+
       setGeneratedCard(card);
-      setIsSubmitting(false);
       onCardGenerated?.(card);
-    }, 400);
+      onRegistrationSuccess?.(record);
+    } catch (err) {
+      console.error('Error registrando jugador:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -128,13 +164,13 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10">
           <div className="text-xs font-bold uppercase tracking-wider text-[#4A6C6F] mb-2">
-            Inscripción Inmediata 100% Gratuita
+            Bingos Comunitarios · Inscripción Inmediata 100% Gratuita
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-stone-900 tracking-tight font-heading">
-            Pide Tu Cartón Digital Gratis
+            Pide Tu Cartón Gratis para los Bingos Comunitarios
           </h2>
           <p className="mt-2.5 text-stone-600 text-sm sm:text-base leading-relaxed">
-            Completa tus datos en 30 segundos. Te generamos tu cartón digital con serial único para que participes en el torneo de Maicao.
+            Completa tus datos en 30 segundos. Te generamos tu cartón digital con serial único para que participes en los <strong>bingos comunitarios</strong> de Maicao.
           </p>
         </div>
 
@@ -150,14 +186,46 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
             <BingoCardView card={generatedCard} />
 
-            <div className="text-center pt-2">
-              <button
-                type="button"
-                onClick={() => setGeneratedCard(null)}
-                className="text-xs text-stone-600 underline hover:text-[#C45A3C] transition-colors"
-              >
-                Inscribir otro familiar mayor de 18 años
-              </button>
+            {/* Callout box to register another family member */}
+            <div className="pt-3 max-w-md mx-auto">
+              <div className="p-5 rounded-2xl bg-gradient-to-b from-white to-[#FAF6EF] border-2 border-[#E8D5B5] shadow-md text-center space-y-3">
+                {/* Clear prominent text above button */}
+                <div className="space-y-1">
+                  <div className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-[#C45A3C] bg-[#C45A3C]/10 px-2.5 py-0.5 rounded-full">
+                    <Users className="w-3.5 h-3.5" />
+                    <span>Participación Familiar</span>
+                  </div>
+                  <h4 className="text-base sm:text-lg font-black text-stone-900 font-heading">
+                    Inscribir otro familiar mayor de 18 años
+                  </h4>
+                  <p className="text-xs text-stone-600">
+                    ¿Alguien más en tu casa quiere su cartón gratis? Regístralo en 30 segundos.
+                  </p>
+                </div>
+
+                {/* Dynamic, eye-catching button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onInviteAnother) {
+                      onInviteAnother();
+                    } else {
+                      setGeneratedCard(null);
+                      setFormData((prev) => ({
+                        ...prev,
+                        fullName: '',
+                        phone: '',
+                        acceptsRulesAndAge: true,
+                      }));
+                    }
+                  }}
+                  className="w-full py-3.5 px-6 rounded-xl font-black text-sm sm:text-base text-white bg-gradient-to-r from-[#00C2D1] via-[#00A9B7] to-[#4A6C6F] hover:from-[#00A9B7] hover:to-[#354F52] hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md group focus:outline-none focus:ring-4 focus:ring-[#00C2D1]/30"
+                >
+                  <UserPlus className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span>Inscribir a otro</span>
+                  <Sparkles className="w-4 h-4 text-amber-200 animate-pulse" />
+                </button>
+              </div>
             </div>
           </div>
         ) : (
@@ -421,7 +489,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
                 {/* MANDATORY COMPLIANCE TEXT UNDER BUTTON */}
                 <p className="mt-3 text-center text-xs text-stone-500 font-medium">
-                  Torneo gratuito. Sin compra necesaria. Mayores de 18 años.
+                  Torneo de bingos comunitarios. Sin compra necesaria. Mayores de 18 años.
                 </p>
               </div>
 

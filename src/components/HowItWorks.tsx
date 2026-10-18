@@ -27,9 +27,9 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onRegisterClick }) => {
       step: '03',
       title: 'Juega en vivo y suma puntos por figura',
       description:
-        'Conéctate a las transmisiones en vivo los fines de semana. Cada línea, esquina o cartón lleno suma puntos acumulativos.',
+        'Conéctate a las transmisiones en vivo de nuestros bingos comunitarios los fines de semana. Cada línea, esquina o cartón lleno suma puntos acumulativos.',
       icon: Radio,
-      badge: 'En vivo y transparente',
+      badge: 'Bingos Comunitarios en Vivo',
     },
   ];
 
@@ -40,13 +40,13 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onRegisterClick }) => {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <div className="text-xs font-bold uppercase tracking-wider text-[#4A6C6F] mb-2">
-            Mecánica Simple y Transparente
+            Bingos Comunitarios · Mecánica Simple
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-stone-900 tracking-tight font-heading">
-            ¿Cómo Funciona el Torneo?
+            ¿Cómo Funciona el Torneo Comunitario?
           </h2>
           <p className="mt-3 text-stone-600 text-sm sm:text-base leading-relaxed">
-            Tres pasos sencillos para participar desde tu casa en Maicao y competir sanamente por la canasta de mercado familiar.
+            Tres pasos sencillos para participar desde tu casa en Maicao en nuestros <strong>bingos comunitarios</strong> y competir sanamente por la canasta de mercado familiar.
           </p>
         </div>
 

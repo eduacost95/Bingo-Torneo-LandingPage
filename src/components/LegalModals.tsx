@@ -32,7 +32,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
             )}
             <h3 className="text-lg sm:text-xl font-black text-stone-900 font-heading">
               {rulesOpen
-                ? 'Reglas Oficiales del Torneo - Bingo Torneo Free'
+                ? 'Reglas Oficiales - Bingo Torneo Comunitario'
                 : 'Política de Tratamiento de Datos Personales (Ley 1581)'}
             </h3>
           </div>
@@ -51,7 +51,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
           {rulesOpen && (
             <div className="space-y-5">
               <div className="p-3 bg-[#FAF6EF] rounded-xl border border-[#E8D5B5] text-xs font-medium text-stone-700">
-                Torneo de entretenimiento familiar sin compra, sin apuesta, sin depósito. Premios en especie y bonos de mercado. Exclusivo para mayores de 18 años residentes en Maicao, Riohacha y Uribia, La Guajira, Colombia.
+                Torneo de bingos comunitarios y entretenimiento familiar sin compra, sin apuesta, sin depósito. Premios en especie y bonos de mercado. Exclusivo para mayores de 18 años residentes en Maicao y municipios de La Guajira, Colombia.
               </div>
 
               {OFFICIAL_RULES_SECTIONS.map((sec) => (
@@ -69,7 +69,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                 Aviso de Privacidad y Autorización de Tratamiento de Datos Personales
               </h4>
               <p>
-                De conformidad con lo dispuesto en la <strong>Ley Estatutaria 1581 de 2012</strong>, su Decreto Reglamentario 1377 de 2013 y demás normas complementarias de la República de Colombia, [Bingo Torneo Free - Maicao Entretenimiento Familiar], como Responsable del Tratamiento de datos personales, informa a los participantes:
+                De conformidad con lo dispuesto en la <strong>Ley Estatutaria 1581 de 2012</strong>, su Decreto Reglamentario 1377 de 2013 y demás normas complementarias de la República de Colombia, [Bingo Torneo Comunitario - Maicao Entretenimiento Familiar], como Responsable del Tratamiento de datos personales, informa a los participantes:
               </p>
               
               <div className="space-y-2">
@@ -78,8 +78,8 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   Los datos solicitados (nombre completo, número telefónico celular de WhatsApp y barrio/municipio de residencia) tienen como finalidad exclusiva:
                 </p>
                 <ul className="list-disc pl-5 space-y-1 text-stone-600">
-                  <li>Asignar un cartón digital numerado único e intransferible por persona.</li>
-                  <li>Enviar los enlaces directos a las transmisiones en vivo del torneo y recordatorios del horario de juego.</li>
+                  <li>Asignar un cartón digital numerado único e intransferible por persona para los bingos comunitarios.</li>
+                  <li>Enviar los enlaces directos a las transmisiones en vivo del torneo comunitario y recordatorios del horario de juego.</li>
                   <li>Validar la identidad del participante en caso de resultar ganador de los bonos de mercado o canasta familiar.</li>
                   <li>Coordinar la entrega presencial de premios en el municipio de Maicao.</li>
                 </ul>
@@ -95,7 +95,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
               <div className="space-y-2">
                 <h5 className="font-bold text-stone-800 text-xs">3. Seguridad y No Cesión:</h5>
                 <p className="text-stone-600">
-                  Bingo Torneo Free se compromete a no vender, ceder ni compartir sus datos con terceras empresas para fines comerciales o publicitarios ajenos a la actividad. No se solicita ningún dato bancario ni financiero.
+                  Bingo Torneo Comunitario se compromete a no vender, ceder ni compartir sus datos con terceras empresas para fines comerciales o publicitarios ajenos a la actividad. No se solicita ningún dato bancario ni financiero.
                 </p>
               </div>
             </div>

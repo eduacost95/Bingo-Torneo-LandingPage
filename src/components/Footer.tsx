@@ -3,24 +3,31 @@ import React from 'react';
 interface FooterProps {
   onOpenRulesModal: () => void;
   onOpenPrivacyModal: () => void;
+  onOpenAdmin?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onOpenRulesModal,
   onOpenPrivacyModal,
+  onOpenAdmin,
 }) => {
   return (
     <footer className="bg-stone-900 text-stone-300 py-10 border-t border-stone-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center sm:text-left">
         
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-stone-800 pb-6">
-          <div className="flex items-center gap-2">
-            <span className="w-7 h-7 rounded-lg bg-[#C45A3C] text-white flex items-center justify-center text-xs font-black">
+          <div className="flex items-center gap-2.5">
+            <span className="w-8 h-8 rounded-lg bg-[#C45A3C] text-white flex items-center justify-center text-xs font-black">
               B
             </span>
-            <span className="font-heading font-black text-white text-base">
-              Bingo Torneo Free
-            </span>
+            <div className="flex flex-col text-left leading-none">
+              <span className="font-heading font-black text-white text-base">
+                Bingo Torneo
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#00C2D1] mt-0.5">
+                Comunitario
+              </span>
+            </div>
             <span className="text-xs text-stone-400">· Maicao, La Guajira</span>
           </div>
 
@@ -38,12 +45,23 @@ export const Footer: React.FC<FooterProps> = ({
             >
               Política de Datos (Ley 1581)
             </button>
+            {onOpenAdmin && (
+              <>
+                <span aria-hidden="true" className="text-stone-600">·</span>
+                <button
+                  onClick={onOpenAdmin}
+                  className="hover:text-[#00C2D1] transition-colors cursor-pointer font-semibold"
+                >
+                  Panel de Control (Admin)
+                </button>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Short Legal Fixed Text requested verbatim */}
+        {/* Short Legal Fixed Text */}
         <p className="text-xs text-stone-400 leading-relaxed text-center">
-          © Bingo Torneo Free Maicao. Torneo gratuito sin compra necesaria. 18+. Entretenimiento familiar. Premios en especie, no efectivo. No afiliado a Facebook.{' '}
+          © Bingo Torneo Comunitario Maicao. Torneo de bingos comunitarios gratuito sin compra necesaria. 18+. Entretenimiento familiar. Premios en especie, no efectivo. No afiliado a Facebook.{' '}
           <button
             onClick={onOpenRulesModal}
             className="text-stone-300 hover:text-white underline inline-block"
@@ -60,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Additional compliance note */}
         <p className="text-[11px] text-stone-500 text-center max-w-3xl mx-auto leading-normal">
-          Actividad libre de apuestas conforme al marco regulatorio colombiano de promociones y entretenimiento social. La asignación de cartones no requiere pago alguno. Prohibida la participación de menores de edad.
+          Actividad de bingos comunitarios libre de apuestas conforme al marco regulatorio colombiano de promociones y entretenimiento social. La asignación de cartones no requiere pago alguno. Prohibida la participación de menores de edad.
         </p>
 
       </div>

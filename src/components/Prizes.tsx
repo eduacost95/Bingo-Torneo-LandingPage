@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Utensils, ShieldCheck, MapPin, AlertCircle } from 'lucide-react';
+import { TournamentSettings } from '../types';
+import { DEFAULT_SETTINGS } from '../lib/supabase';
 
 interface PrizesProps {
   onRegisterClick: () => void;
+  settings?: TournamentSettings;
 }
 
-export const Prizes: React.FC<PrizesProps> = ({ onRegisterClick }) => {
+export const Prizes: React.FC<PrizesProps> = ({
+  onRegisterClick,
+  settings = DEFAULT_SETTINGS,
+}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  const { firstPrize, secondPrize, thirdPrize } = settings;
 
   return (
     <section id="premios" className="py-16 sm:py-24 bg-white border-t border-[#E8D5B5]/60">
@@ -85,22 +93,24 @@ export const Prizes: React.FC<PrizesProps> = ({ onRegisterClick }) => {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-black uppercase tracking-wider text-[#C45A3C] bg-[#C45A3C]/10 px-2 py-0.5 rounded">
-                      Primer Puesto (Llegar a 500 Pts)
+                      {firstPrize.badge || 'Primer Puesto (Llegar a 500 Pts)'}
                     </span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-black text-stone-900 font-heading">
-                    Bono de Mercado por $400.000 COP
+                    {firstPrize.title}
                   </h3>
-                  <p className="text-sm font-semibold text-[#4A6C6F]">
-                    + Canasta Familiar Completa en Tienda / Supermercado Local Aliado
-                  </p>
+                  {firstPrize.subtitle && (
+                    <p className="text-sm font-semibold text-[#4A6C6F]">
+                      {firstPrize.subtitle}
+                    </p>
+                  )}
                 </div>
                 <div className="w-12 h-12 rounded-xl bg-[#C45A3C] text-white flex items-center justify-center text-lg font-black shrink-0 font-heading shadow-xs">
                   1º
                 </div>
               </div>
               <p className="mt-3 text-xs sm:text-sm text-stone-600 leading-relaxed">
-                El primer participante en acumular 500 puntos se lleva el gran bono de mercado de cuatrocientos mil pesos colombianos más la canasta de víveres.
+                {firstPrize.description}
               </p>
             </div>
 
@@ -109,13 +119,13 @@ export const Prizes: React.FC<PrizesProps> = ({ onRegisterClick }) => {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                   <span className="text-xs font-bold uppercase tracking-wider text-[#4A6C6F]">
-                    Segundo Puesto
+                    {secondPrize.badge || 'Segundo Puesto'}
                   </span>
                   <h3 className="text-lg sm:text-xl font-black text-stone-900 font-heading">
-                    Bono de Mercado por $200.000 COP
+                    {secondPrize.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-600">
-                    Bono válido para compras de alimentos y víveres en almacenes de cadena o supermercados en Maicao.
+                    {secondPrize.description}
                   </p>
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-[#4A6C6F] text-white flex items-center justify-center text-base font-black shrink-0 font-heading shadow-xs">
@@ -129,13 +139,13 @@ export const Prizes: React.FC<PrizesProps> = ({ onRegisterClick }) => {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                   <span className="text-xs font-bold uppercase tracking-wider text-stone-500">
-                    Tercer Puesto
+                    {thirdPrize.badge || 'Tercer Puesto'}
                   </span>
                   <h3 className="text-lg sm:text-xl font-black text-stone-900 font-heading">
-                    Bono de Cena Familiar / Recarga + Kit Bingo
+                    {thirdPrize.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-600">
-                    Bono para compartir una cena en restaurante local aliado de Maicao o recarga móvil + gorra/termo oficial.
+                    {thirdPrize.description}
                   </p>
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-stone-300 text-stone-800 flex items-center justify-center text-base font-black shrink-0 font-heading shadow-xs">

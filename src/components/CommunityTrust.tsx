@@ -7,11 +7,11 @@ export const CommunityTrust: React.FC = () => {
   const [copiedShare, setCopiedShare] = useState(false);
 
   const officialAdCopy =
-    'Torneo gratuito de bingo por puntos. Cartón gratis. Acumula hasta 500 puntos. Premios en bonos de mercado para 1er, 2do y 3er puesto. Sin compra. 18+';
+    'Torneo de bingos comunitarios por puntos. Cartón gratis. Acumula hasta 500 puntos. Premios en bonos de mercado para 1er, 2do y 3er puesto. Sin compra. 18+';
 
   const handleCopyAdCopy = () => {
     navigator.clipboard?.writeText?.(
-      `¡Vecino! Participa gratis en el Bingo Torneo Free de Maicao: ${officialAdCopy}`
+      `¡Vecino! Participa gratis en los Bingos Comunitarios de Bingo Torneo en Maicao: ${officialAdCopy}`
     );
     setCopiedShare(true);
     setTimeout(() => setCopiedShare(false), 2500);
@@ -67,11 +67,11 @@ export const CommunityTrust: React.FC = () => {
                 Espacio de Integración Barrial
               </span>
               <h3 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight font-heading">
-                Un Juego Pensado Para Nuestra Gente en Maicao
+                Bingos Comunitarios Pensados Para Nuestra Gente
               </h3>
               <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
-                El bingo tradicional siempre ha sido el punto de encuentro de las familias colombianas. 
-                Adaptamos esta tradición al formato digital, permitiendo que cada participante juegue desde 
+                El bingo tradicional siempre ha sido el punto de encuentro de los barrios. 
+                Adaptamos esta tradición a nuestros <strong>bingos comunitarios digitales</strong>, permitiendo que cada participante juegue desde 
                 su celular sin arriesgar ni un solo peso de su bolsillo.
               </p>
             </div>

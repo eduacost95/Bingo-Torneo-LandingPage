@@ -130,14 +130,14 @@ export const OFFICIAL_RULES_SECTIONS = [
   {
     id: 'organizador',
     title: '1. Organizador, Vigencia y Territorio',
-    content: `El presente torneo es organizado por [Bingo Torneo Free - Entretenimiento Familiar Maicao] ("El Organizador"). 
-El torneo se desarrollará durante la vigencia actual con rondas semanales comunicadas a los participantes registrados. 
-Territorio de validez: Válido exclusivamente para personas naturales mayores de dieciocho (18) años domiciliadas en el municipio de Maicao y áreas adyacentes de Riohacha y Uribia, departamento de La Guajira, República de Colombia.`,
+    content: `El presente torneo es organizado por [Bingo Torneo Comunitario - Maicao] ("El Organizador"). 
+El torneo se desarrollará durante la vigencia actual con rondas de bingos comunitarios comunicadas a los participantes registrados. 
+Territorio de validez: Válido exclusivamente para personas naturales mayores de dieciocho (18) años domiciliadas en el municipio de Maicao y áreas adyacentes de La Guajira (Riohacha, Uribia, Manaure, Albania, Hato Nuevo, Villanueva, Fonseca y demás municipios), República de Colombia.`,
   },
   {
     id: 'naturaleza',
     title: '2. Naturaleza 100% Gratuita y Sin Apuesta',
-    content: `Esta actividad es un evento de entretenimiento comunitario y social por acumulación de puntos, totalmente libre de apuestas. 
+    content: `Esta actividad corresponde a bingos comunitarios de entretenimiento social por acumulación de puntos, totalmente libre de apuestas. 
 No se requiere compra de ningún producto, depósito ni cobro de derechos de participación. Los cartones son gratuitos, personales e intransferibles. 
 Bajo ninguna circunstancia se aceptan pagos o se vende ventaja alguna en el juego.`,
   },
@@ -145,7 +145,7 @@ Bajo ninguna circunstancia se aceptan pagos o se vende ventaja alguna en el jueg
     id: 'mecanica',
     title: '3. Mecánica del Torneo y Sistema de 500 Puntos',
     content: `Cada participante registrado recibe un cartón digital numerado con código de serie único. 
-Durante las transmisiones en vivo se cantarán balotas al azar del 1 al 75. 
+Durante las transmisiones en vivo de los bingos comunitarios se cantarán balotas al azar del 1 al 75. 
 Puntajes por figura completada y validada en vivo:
 • LÍNEA (horizontal, vertical o diagonal): 50 Puntos.
 • 4 ESQUINAS: 75 Puntos.
@@ -161,18 +161,18 @@ Los puntos se acumulan fecha tras fecha hasta alcanzar la meta de 500 puntos:
     content: `Los premios consisten estrictamente en:
 - 1er Puesto: Bono de mercado de $400.000 COP para compras en supermercado local aliado en Maicao + Canasta familiar con víveres de primera necesidad.
 - 2do Puesto: Bono de mercado de $200.000 COP para compras de alimentos.
-- 3er Puesto: Bono de cena familiar / recarga + Kit conmemorativo Bingo Torneo Free.
+- 3er Puesto: Bono de cena familiar / recarga + Kit conmemorativo Bingo Torneo Comunitario.
 Ningún premio podrá ser canjeado por dinero en efectivo, cheques ni divisas. La entrega se realiza de forma presencial en Maicao previa exhibición de la cédula de ciudadanía original del titular registrado.`,
   },
   {
     id: 'datos',
     title: '5. Protección de Datos Personales (Ley 1581 de 2012)',
-    content: `En cumplimiento de la Ley Estatutaria 1581 de 2012 y el Decreto 1377 de 2013 de Colombia, el participante autoriza de manera previa, expresa e informada a [Bingo Torneo Free] para recolectar, almacenar y utilizar sus datos personales (nombre, teléfono celular, ubicación) con la finalidad exclusiva de gestionar la asignación de su cartón digital, coordinar la participación en el torneo y notificar eventuales premios. El titular podrá ejercer en cualquier momento sus derechos de consulta, actualización o revocatoria comunicándose a la línea oficial de atención.`,
+    content: `En cumplimiento de la Ley Estatutaria 1581 de 2012 y el Decreto 1377 de 2013 de Colombia, el participante autoriza de manera previa, expresa e informada a [Bingo Torneo Comunitario] para recolectar, almacenar y utilizar sus datos personales (nombre, teléfono celular, ubicación) con la finalidad exclusiva de gestionar la asignación de su cartón digital, coordinar la participación en los bingos comunitarios y notificar eventuales premios. El titular podrá ejercer en cualquier momento sus derechos de consulta, actualización o revocatoria comunicándose a la línea oficial de atención.`,
   },
   {
     id: 'meta_disclaimer',
     title: '6. Deslinde de Responsabilidad de Meta (Facebook e Instagram)',
-    content: `Esta promoción no está patrocinada, avalada, administrada ni asociada en modo alguno a Facebook ni a Instagram. Al participar, liberas completamente a Facebook e Instagram de toda responsabilidad. Entiendes que proporcionas tu información a Bingo Torneo Free y no a Meta. Facebook no asistirá en la administración de esta promoción y participas bajo tu propio riesgo.`,
+    content: `Esta promoción no está patrocinada, avalada, administrada ni asociada en modo alguno a Facebook ni a Instagram. Al participar, liberas completamente a Facebook e Instagram de toda responsabilidad. Entiendes que proporcionas tu información a Bingo Torneo (Bingo Torneo Free) y no a Meta. Facebook no asistirá en la administración de esta promoción y participas bajo tu propio riesgo.`,
   },
 ];
 

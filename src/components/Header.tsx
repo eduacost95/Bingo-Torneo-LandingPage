@@ -1,26 +1,34 @@
 import React, { useState } from 'react';
-import { Menu, X, Gift } from 'lucide-react';
+import { Menu, X, Gift, ShieldCheck } from 'lucide-react';
 
 interface HeaderProps {
   onRegisterClick: () => void;
+  onOpenAdmin?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onRegisterClick }) => {
+export const Header: React.FC<HeaderProps> = ({ onRegisterClick, onOpenAdmin }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 bg-[#FAF6EF]/95 backdrop-blur-md border-b border-[#E8D5B5]/60 transition-colors">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-8 h-18">
-          {/* Zone 1: Single text element wordmark */}
+          {/* Zone 1: Brand title with Comunitario subtitle */}
           <a
             href="#"
-            className="text-xl sm:text-2xl font-black tracking-tight text-[#C45A3C] font-heading whitespace-nowrap shrink-0 hover:opacity-90 transition-opacity flex items-center gap-2"
+            className="hover:opacity-90 transition-opacity flex items-center gap-2.5 whitespace-nowrap shrink-0"
           >
-            <span className="w-8 h-8 rounded-lg bg-[#C45A3C] text-white flex items-center justify-center text-sm font-black shadow-xs">
+            <span className="w-9 h-9 rounded-xl bg-[#C45A3C] text-white flex items-center justify-center text-base font-black shadow-xs font-heading">
               B
             </span>
-            <span>Bingo Torneo Free</span>
+            <div className="flex flex-col text-left leading-none">
+              <span className="text-xl sm:text-2xl font-black tracking-tight text-[#C45A3C] font-heading">
+                Bingo Torneo
+              </span>
+              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#4A6C6F] mt-0.5">
+                Comunitario
+              </span>
+            </div>
           </a>
 
           {/* Zone 2: 4-5 clean single-line text navigation links */}
@@ -58,7 +66,19 @@ export const Header: React.FC<HeaderProps> = ({ onRegisterClick }) => {
           </nav>
 
           {/* Zone 3: 1 primary action */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {onOpenAdmin && (
+              <button
+                type="button"
+                onClick={onOpenAdmin}
+                className="p-2 text-stone-500 hover:text-stone-900 hover:bg-[#E8D5B5]/30 rounded-xl transition-colors cursor-pointer"
+                title="Panel Administrativo y de Configuración"
+                aria-label="Panel Administrativo"
+              >
+                <ShieldCheck className="w-5 h-5" />
+              </button>
+            )}
+
             <button
               onClick={onRegisterClick}
               className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-bold text-white bg-[#00C2D1] hover:bg-[#00A9B7] active:scale-[0.98] rounded-xl transition-all shadow-sm whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00C2D1]"
@@ -120,7 +140,7 @@ export const Header: React.FC<HeaderProps> = ({ onRegisterClick }) => {
               Preguntas Frecuentes
             </a>
           </nav>
-          <div className="pt-2">
+          <div className="pt-2 space-y-2">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
@@ -131,6 +151,20 @@ export const Header: React.FC<HeaderProps> = ({ onRegisterClick }) => {
               <Gift className="w-4 h-4" />
               Quiero mi cartón gratis
             </button>
+
+            {onOpenAdmin && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenAdmin();
+                }}
+                className="w-full py-2 px-3 text-center text-xs font-semibold text-stone-600 hover:text-stone-900 bg-stone-100 rounded-lg flex items-center justify-center gap-1.5"
+              >
+                <ShieldCheck className="w-3.5 h-3.5" />
+                Panel Administrativo
+              </button>
+            )}
           </div>
         </div>
       )}

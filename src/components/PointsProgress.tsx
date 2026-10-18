@@ -22,15 +22,15 @@ export const PointsProgress: React.FC = () => {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
           <div className="text-xs font-bold uppercase tracking-wider text-[#C45A3C] mb-2">
-            Mecánica de Puntuación Acumulativa
+            Bingos Comunitarios · Puntuación Oficial
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-stone-900 tracking-tight font-heading">
-            Sistema Oficial de 500 Puntos
+            Sistema de 500 Puntos del Torneo Comunitario
           </h2>
           <p className="mt-3 text-stone-700 text-sm sm:text-base leading-relaxed">
-            El primer jugador en alcanzar <strong>500 puntos</strong> se lleva el 1er puesto. 
+            El primer jugador en alcanzar <strong>500 puntos</strong> en nuestros <strong>bingos comunitarios</strong> se lleva el 1er puesto. 
             El segundo en llegar se lleva el 2do puesto y el tercero el 3er puesto. 
-            Los puntos se acumulan durante todo el torneo en cada transmisión.
+            Los puntos se acumulan durante todo el torneo en cada transmisión en vivo.
           </p>
         </div>
 

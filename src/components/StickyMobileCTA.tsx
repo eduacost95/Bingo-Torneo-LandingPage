@@ -42,7 +42,7 @@ export const StickyMobileCTA: React.FC<StickyMobileCTAProps> = ({ onRegisterClic
             100% Gratis · 18+
           </span>
           <span className="text-xs font-bold text-stone-900 truncate">
-            Torneo en Maicao
+            Bingos Comunitarios
           </span>
         </div>
 
